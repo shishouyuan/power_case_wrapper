@@ -14,10 +14,10 @@ case=CaseWrapper(pypower.case14())
 # case=CaseWrapper(pypower.runopf(pypower.case14()))
 
 print(case.gen.PG)
-print(case.gen.PG[2:4])
+print(case.gen.PG[1:3])
 
 # [232.4  40.    0.    0.    0. ]
-# [0. 0.]
+# [40. 0.]
 ```
 
 

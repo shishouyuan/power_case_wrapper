@@ -71,6 +71,8 @@ class _PropertyGenerator:
         def set(s, val):
             if index < s.case.case_value[name].shape[1]:
                 s.case.case_value[name][:, index] = val
+            else:
+                raise AttributeError('No space for this property in the underlying case data.')
         return get, set
 
     def property(self, fun: Callable):

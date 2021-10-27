@@ -6,7 +6,7 @@ case=CaseWrapper(pypower.case14())
 # case=CaseWrapper(pypower.runopf(pypower.case14()))
 
 print(case.gen.PG)
-print(case.gen.PG[2:4])
+print(case.gen.PG[1:3])
 #%%
 case.gen.PG=0
 print(case.gen.PG)
