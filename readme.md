@@ -1,6 +1,7 @@
 # Introduction
-Wrap matpower/pypower case data into a class in order to access parameters conveniently.
-将matpower/pypower的case包装成类以便于访问各个参数。
+- Wrap matpower/pypower case data into a class in order to access parameters conveniently.
+
+- 将matpower/pypower的case包装成类以便于访问各个参数。
 
 # Example
 
