@@ -285,8 +285,8 @@ class Gen:
 
         (MODEL = 2) ⇒ cn, . . . , c1, c0
             N coefficients of n-th order polynomial cost function, starting
-            with highest order, where cost is f(p) = cnp
-            n + · · · + c1p + c0
+            with highest order, where cost is f(p) = cn*p
+            ^n + · · · + c1*p + c0
         '''
         return self.case.case_value[self._costtab][:, 4:]
 
