@@ -264,17 +264,17 @@ class Gen:
     @property
     def cost_MODEL(self):
         'MODEL in matpower: cost model, 1 = piecewise linear, 2 = polynomial'
-        return self.case.case_value[self._costtab][0]
+        return self.case.case_value[self._costtab][:,0]
 
     @property
     def cost_STARTUP(self):
         'STARTUP in matpower: startup cost in US dollars'
-        return self.case.case_value[self._costtab][1]
+        return self.case.case_value[self._costtab][:,1]
 
     @property
     def cost_SHUTDOWN(self):
         'SHUTDOWN in matpower: shutdown cost in US dollars'
-        return self.case.case_value[self._costtab][2]
+        return self.case.case_value[self._costtab][:,2]
 
     @property
     def cost_COST(self):
