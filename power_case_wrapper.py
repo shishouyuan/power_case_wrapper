@@ -148,6 +148,11 @@ class Bus:
     @_dec.property
     def MU_VMIN(
         self) -> List[float]: 'Kuhn-Tucker multiplier on lower voltage limit (u/p.u.)'
+    
+    @property
+    def value(self):
+        'get the bus matrix'
+        return self.case.case_value[self._tab]
 
     @property
     def bus_count(self):
@@ -164,7 +169,7 @@ class Gen:
                 'QC1MAX', 'QC2MIN', 'QC2MAX', 'RAMP_AGC', 'RAMP_10', 'RAMP_30', 'RAMP_Q', 'APF', 'MU_PMAX', 'MU_PMIN', 'MU_QMAX', 'MU_QMIN']
 
     _dec = _PropertyGenerator(_tab, _members)
-
+    
     @_dec.property
     def GEN_BUS(self) -> List[float]: 'bus number'
 
@@ -291,6 +296,16 @@ class Gen:
         return self.case.case_value[self._costtab][:, 4:]
 
     @property
+    def value(self):
+        'get the gen matrix'
+        return self.case.case_value[self._tab]
+    
+    @property
+    def cost_value(self):
+        'get the gencost matrix'
+        return self.case.case_value[self._costtab]
+
+    @property
     def gen_count(self):
         'total count of generators'
         return self.case.case_value[self._tab].shape[0]
@@ -382,6 +397,11 @@ class Branch:
     @_dec.property
     def MU_ANGMAX(
         self) -> List[float]: 'Kuhn-Tucker multiplier upper angle difference limit (u/degree)'
+
+    @property
+    def value(self):
+        'get the branch matrix'
+        return self.case.case_value[self._tab]
 
     @property
     def branch_count(self):
