@@ -54,6 +54,12 @@ class CaseWrapper:
         'branch data'
         return self.__branch
 
+def int_property(pro:property)->property:
+    get=None
+    old_get=pro.fget
+    if old_get:
+        get=lambda s: old_get(s).astype(int)
+    return property(get,pro.fset,pro.fdel,pro.__doc__)
 
 class _PropertyGenerator:
     def __init__(self, tab: str, items: List[str]) -> None:
@@ -90,10 +96,12 @@ class Bus:
                 'BASE_KV', 'ZONE', 'VMAX', 'VMIN', 'LAM_P', 'LAM_Q', 'MU_VMAX', 'MU_VMIN']
 
     _dec = _PropertyGenerator(_tab, _members)
-
+    
+    @int_property
     @_dec.property
     def BUS_I(self) -> List[float]: 'bus number (positive integer)'
-
+    
+    @int_property
     @_dec.property
     def BUS_TYPE(
         self) -> List[float]: 'bus type (1 = PQ, 2 = PV, 3 = ref, 4 = isolated)'
@@ -111,7 +119,8 @@ class Bus:
     @_dec.property
     def BS(
         self) -> List[float]: 'shunt susceptance (MVAr injected at V = 1.0 p.u.)'
-
+    
+    @int_property
     @_dec.property
     def BUS_AREA(self) -> List[float]: 'area number (positive integer)'
 
@@ -123,7 +132,8 @@ class Bus:
 
     @_dec.property
     def BASE_KV(self) -> List[float]: 'base voltage (kV)'
-
+    
+    @int_property
     @_dec.property
     def ZONE(self) -> List[float]: 'loss zone (positive integer)'
 
@@ -170,6 +180,7 @@ class Gen:
 
     _dec = _PropertyGenerator(_tab, _members)
     
+    @int_property    
     @_dec.property
     def GEN_BUS(self) -> List[float]: 'bus number'
 
@@ -191,7 +202,8 @@ class Gen:
     @_dec.property
     def MBASE(
         self) -> List[float]: 'total MVA base of machine, defaults to baseMVA'
-
+    
+    @int_property
     @_dec.property
     def GEN_STATUS(
         self) -> List[float]: 'machine status, > 0 = machine in-service, ≤ 0 = machine out-of-service'
@@ -260,7 +272,8 @@ class Gen:
         self) -> List[float]: 'Kuhn-Tucker multiplier on lower Qg limit (u/MVAr)'
 
     _costtab = "gencost"
-
+    
+    @int_property
     @property
     def cost_MODEL(self):
         'MODEL in matpower: cost model, 1 = piecewise linear, 2 = polynomial'
@@ -320,10 +333,12 @@ class Branch:
                 'BR_STATUS', 'ANGMIN', 'ANGMAX', 'PF', 'QF', 'PT', 'QT', 'MU_SF', 'MU_ST', 'MU_ANGMIN', 'MU_ANGMAX']
 
     _dec = _PropertyGenerator(_tab, _members)
-
+    
+    @int_property
     @_dec.property
     def F_BUS(self) -> List[float]: '“from” bus number'
-
+    
+    @int_property
     @_dec.property
     def T_BUS(self) -> List[float]: '“to” bus number'
 
@@ -355,7 +370,8 @@ class Branch:
     @_dec.property
     def SHIFT(
         self) -> List[float]: 'transformer phase shift angle (degrees), positive ⇒ delay'
-
+    
+    @int_property
     @_dec.property
     def BR_STATUS(
         self) -> List[float]: 'initial branch status, 1 = in-service, 0 = out-of-service'
