@@ -10,8 +10,13 @@ class CaseWrapper:
     Created in 2021/05/28
     '''
 
-    def __init__(self, case_value) -> None:
+    def __init__(self, case_value, index_offset=0) -> None:
+        """
+        case_value: case data in pypower format
+        index_offset: offset the index of components without changing the underlying data
+        """
         self.case_value = case_value
+        self.index_offset=index_offset
         self.__bus = Bus(self)
         self.__gen = Gen(self)
         self.__branch = Branch(self)
@@ -52,15 +57,26 @@ class CaseWrapper:
     @property
     def branch(self):
         'branch data'
-        return self.__branch
+        return self.__branch    
+    
 
-def int_property(pro:property)->property:
+def int_property(pro)->property:
     get=None
     old_get=pro.fget
     if old_get:
         get=lambda s: old_get(s).astype(int)
     return property(get,pro.fset,pro.fdel,pro.__doc__)
 
+def offset_index(pro)->property:        
+        get=None
+        old_get=pro.fget
+        if old_get:
+            get=lambda s: old_get(s)+s.case.index_offset
+        set=None
+        old_set=pro.fset
+        if old_set:
+            set=lambda s,val: old_set(s,val-s.case.index_offset)
+        return property(get,set,pro.fdel,pro.__doc__)
 class _PropertyGenerator:
     def __init__(self, tab: str, items: List[str]) -> None:
         self.tab = tab
@@ -97,6 +113,7 @@ class Bus:
 
     _dec = _PropertyGenerator(_tab, _members)
     
+    @offset_index
     @int_property
     @_dec.property
     def BUS_I(self) -> List[float]: 'bus number (positive integer)'
@@ -120,6 +137,7 @@ class Bus:
     def BS(
         self) -> List[float]: 'shunt susceptance (MVAr injected at V = 1.0 p.u.)'
     
+    @offset_index
     @int_property
     @_dec.property
     def BUS_AREA(self) -> List[float]: 'area number (positive integer)'
@@ -133,6 +151,7 @@ class Bus:
     @_dec.property
     def BASE_KV(self) -> List[float]: 'base voltage (kV)'
     
+    @offset_index
     @int_property
     @_dec.property
     def ZONE(self) -> List[float]: 'loss zone (positive integer)'
@@ -180,6 +199,7 @@ class Gen:
 
     _dec = _PropertyGenerator(_tab, _members)
     
+    @offset_index
     @int_property    
     @_dec.property
     def GEN_BUS(self) -> List[float]: 'bus number'
@@ -334,10 +354,12 @@ class Branch:
 
     _dec = _PropertyGenerator(_tab, _members)
     
+    @offset_index
     @int_property
     @_dec.property
     def F_BUS(self) -> List[float]: '“from” bus number'
     
+    @offset_index
     @int_property
     @_dec.property
     def T_BUS(self) -> List[float]: '“to” bus number'
